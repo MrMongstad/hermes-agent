@@ -71,8 +71,13 @@ export function SkillsHubPopoutShell() {
         <div className="pointer-events-none absolute inset-y-0 left-[calc(var(--titlebar-controls-left,14px)+(var(--titlebar-control-size,24px)*2)+0.75rem)] right-[calc(var(--titlebar-tools-right,0.75rem)+0.75rem)] [-webkit-app-region:drag]" />
       </div>
       <div className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
+        {/* allow-popups: the Docusaurus navbar / skill cards link out with
+            target="_blank" (GitHub, Discord, source repos). Without it the
+            sandbox swallows the popup silently. The main process routes
+            http/https/mailto through openExternalUrl (audited allowlist) via
+            decideHubWindowOpen; nothing else may open. */}
         <iframe
-          sandbox="allow-scripts allow-same-origin"
+          sandbox="allow-scripts allow-same-origin allow-popups"
           src={HUB_PICKER_URL}
           style={{
             background: 'transparent',
