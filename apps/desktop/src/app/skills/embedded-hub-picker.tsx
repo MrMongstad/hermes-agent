@@ -198,7 +198,7 @@ export const EmbeddedHubPicker = memo(function EmbeddedHubPicker({
             {updating && <Loader2 className="size-3 animate-spin" />}
             {updating ? h.updating : h.updateAll}
           </Button>
-          <Button onClick={() => void openSkillsHubWindow()} size="xs" variant="text" title={h.pickerPopOut}>
+          <Button onClick={() => void openSkillsHubWindow()} size="xs" title={h.pickerPopOut} variant="text">
             <ExternalLink className="size-3" />
             {h.pickerPopOut}
           </Button>

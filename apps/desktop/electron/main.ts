@@ -88,13 +88,6 @@ import {
   BROWSER_WINDOW_WIDTH,
   buildBrowserWindowUrl
 } from './browser-windows'
-import {
-  HUB_WINDOW_HEIGHT,
-  HUB_WINDOW_MIN_HEIGHT,
-  HUB_WINDOW_MIN_WIDTH,
-  HUB_WINDOW_WIDTH,
-  buildHubWindowUrl
-} from './hub-window'
 import { detectBundleSkew } from './bundle-skew'
 import { detectBundleSwap } from './bundle-swap'
 import { applyConnectionChange, sshQuitShouldBlock, teardownSshState } from './connection-apply'
@@ -229,6 +222,13 @@ import {
   tightenSecretFileMode,
   writeSecretFileAtomic
 } from './hardening'
+import {
+  buildHubWindowUrl,
+  HUB_WINDOW_HEIGHT,
+  HUB_WINDOW_MIN_HEIGHT,
+  HUB_WINDOW_MIN_WIDTH,
+  HUB_WINDOW_WIDTH
+} from './hub-window'
 import { cursorPointInWindow } from './hud-cursor'
 import { startHudGameOverlayWatch } from './hud-game-overlay'
 import { applyHudResetBounds, defaultHudBounds } from './hud-geometry'
