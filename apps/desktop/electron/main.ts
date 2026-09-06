@@ -425,7 +425,7 @@ import {
   registrySshScopeForWindowRoute,
   WindowConnectionRouteRegistry
 } from './window-connection-route'
-import { createWindowOpenHandler } from './window-open-policy'
+import { createWindowOpenHandler, decideHubWindowOpen, describeDeniedUrl } from './window-open-policy'
 import { installWindowRendererLifecycle } from './window-renderer-lifecycle'
 import { createWindowRevealController } from './window-reveal'
 import {
@@ -13620,6 +13620,23 @@ function spawnSkillsHubWindow() {
 
   streamThrottle.register(win)
   wireCommonWindowHandlers(win, zoomWiringForWindowKind('chat'))
+  // The shared handler denies every window.open (GHSA-9f4c-93c8-jc8g) — right
+  // for windows that can render untrusted content. The hub window only ever
+  // loads the fixed, trusted Skills Hub URL, whose navbar / skill cards link
+  // out with target="_blank" (GitHub, Discord, source repos). Route those
+  // http/https/mailto popups through the audited external-open allowlist so
+  // the top-bar links actually work; everything else stays denied.
+  win.webContents.setWindowOpenHandler(details => {
+    const decision = decideHubWindowOpen(details.url)
+
+    if (decision.openExternal) {
+      openExternalUrl(decision.openExternal)
+    } else {
+      rememberLog(`[window-open] hub denied: ${describeDeniedUrl(details.url)}`)
+    }
+
+    return { action: 'deny' }
+  })
   attachRendererConsoleCapture(win, 'skills-hub-window', rememberLog)
 
   installWindowRendererLifecycle(win, {
